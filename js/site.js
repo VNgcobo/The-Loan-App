@@ -25,23 +25,24 @@ function getValues(){
 
 //generate the values
 //logic
-function generateValues(amount,term,rate){
-
-    var payment = amount*(rate/1200)/(1-(1+rate/1200)^-term);
-    var principal = payment - interest;
-    var interest;
-    var totalInterest;
-    var balance = amount - payment;
-
-    //each variable stored in an array?
-    //eg: let paymentArray = []; month finalArray[payment; principal; interest; tInterst; Balance]
-    //or separate this function into separate functions with parameters then store the returned values into an array.
-
-    //loop from 1 to term
-    for(let i = 1; i <= term; i++){
-        
+class Loan{
+    constructor(amount,term,rate){
+        this.amount = amount;
+        this.term = term;
+        this.rate = rate;
     }
-
+    payment(){
+        let monthlyPayment = amount*(rate/1200)/(1-(1+rate/1200)^-term);
+        return monthlyPayment;
+    }
+    principal(){
+        let principalPayment = monthlyPayment - interest;
+        return principalPayment;
+    }
+    balance(){
+        let loanBalance = this.amount - monthlyPayment;
+    }
+    
 }
 
 //display the values to the page
@@ -64,11 +65,11 @@ function displayData(loanArray){
         //grab the td's and put them in an array
         let rowCols = tableRow.querySelectorAll("td");
         rowCols[0].textContent = loanArray[index];
-        rowCols[1].textContent = loanArray[index];
-        rowCols[2].textContent = loanArray[index];
-        rowCols[3].textContent = loanArray[index];
-        rowCols[4].textContent = loanArray[index];
-        rowCols[5].textContent = loanArray[index];
+        rowCols[1].textContent = loanArray[index+1];
+        rowCols[2].textContent = loanArray[index+2];
+        rowCols[3].textContent = loanArray[index+3];
+        rowCols[4].textContent = loanArray[index+4];
+        rowCols[5].textContent = loanArray[index+5];
     }
     document.getElementById("paymentInfo").innerHTML = "Monthly Payment = ${} + payment";
 }
