@@ -25,41 +25,61 @@ function getValues(){
      }
      else{
         // alert("validation is complete");
-        calculate(amount,rate,rate);
+        
      }
 }
+//Idea
+let loan = {};
+loan.Amount = amount;
+loan.Term = term;
+loan.Rate = rate;
+loan.Payment = { get; set;}
 
 //calculate the values
 //App logic
-function calculate(amount,term,rate){
-   //create a loan object
-   let loanObj = {
-      Term(){
-   
-      },
-      Payment(amount, rate, term){
-         let monthlyPayment = amount*(rate/1200)/(1-(1+rate/1200)**(-term));
-         return monthlyPayment;
-      },
-      Principal(){
-         let towardsBalance = monthly_payment - towards_interest;
-         return towardsBalance;
-      },
-      Interest(){
-         let towardInterest = (i/12)*current_balance;
-         return towardInterest;
-      },
-      totalInterest(){
-         let totalInterest = total_interest + towards_interest;
-         return totalInterest;
-      },
-      Balance(){
-         let currentBalance = current_balance - towards_balance;
-         return currentBalance;
-      },
-   };
-   
-   return loanObj.Payment(amount, rate, term);
+function getLoan(){
+   let loanObj = {};
+   let payment = getMonthlyPayments(amount, rate, term);
+   var balance = amount;
+   var totalInterest = 0;
+   var monthlyInterest = 0;
+   var monthlyPrincipal = 0;
+   var monthlyRate = calcMonthlyRate(rate);
+
+   for (let term = 1; term <= loanObj.term; month++){
+      //calculate payment schedule
+      monthlyInterest = CalcMonthlyInterest(balance, monthlyRate);
+      monthlyPrincipal = loan.Payment - monthlyInterest;
+      balance -= monthlyPrincipal;
+      totalInterest += monthlyInterest;
+
+      loanObj.Month = term;
+      loanObj.Payment = payment;
+      loanObj.MonthlyPrincipal = monthlyPrincipal;
+      loanObj.MonthlyInterest = monthlyInterest;
+      loanObj.TotalInterest = totalInterest;
+      loanObj.Balance = balance;
+
+   } 
+   loanObj.TotalInterest = totalInterest;
+   loanObj.TotalCost = loan.Amount + totalInterest;
+
+   return loanObj;
+}
+function getMonthlyPayments(){
+   var monthlyRate = calcMonthlyRate(rate);
+   var amount = amount;
+   var term = term;
+
+   var monthlyPayment = (amount * monthlyRate) / (1 - Math.Pow(1 + monthlyRate, -term));
+
+   return monthlyPayment;
+}
+function calcMonthlyRate(rate){
+   return rate / 1200;
+}
+function calcBalance(){
+
 }
 //--------Display Section-------
 
